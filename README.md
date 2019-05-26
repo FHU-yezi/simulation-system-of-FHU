@@ -1,4 +1,4 @@
-#初心不变运营模拟系统 项目主页
+# 初心不变运营模拟系统 项目主页
 欢迎来到初心不变运营模拟系统项目主页。
 
 该项目皆在为初心不变管理组提供预测和训练新成员。
@@ -15,9 +15,9 @@
 
 ---
 
-#The host page of the project simulation-system-of-FHU
+# The host page of the project simulation-system-of-FHU
 
-wWlcome to the host page of the project simulation-system-of-FHU.
+Welcome to the host page of the project simulation-system-of-FHU.
 
 This project is built for the management group of First Heart Unchanged.
 
