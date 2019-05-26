@@ -1,37 +1,32 @@
-## Welcome to GitHub Pages
+#初心不变运营模拟系统 项目主页
+欢迎来到初心不变运营模拟系统项目主页。
 
-You can use the [editor on GitHub](https://github.com/yezi-Administrator/simulation-system-of-FHU/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+该项目皆在为初心不变管理组提供预测和训练新成员。
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+该项目隶属于 初心不变。
 
-### Markdown
+该项目完全开源，您可通过 fork 此存储库进行代码的完善。
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+如果您想要加入初心不变管理组，请进入(此页面)[https://shimo.im/forms/o1tleFp2IQ8jbO4v/fill]填写申请表单。
 
-```markdown
-Syntax highlighted code block
+初心不变管理组
 
-# Header 1
-## Header 2
-### Header 3
+敬上
 
-- Bulleted
-- List
+---
 
-1. Numbered
-2. List
+#The host page of the project simulation-system-of-FHU
 
-**Bold** and _Italic_ and `Code` text
+wWlcome to the host page of the project simulation-system-of-FHU.
 
-[Link](url) and ![Image](src)
-```
+This project is built for the management group of First Heart Unchanged.
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+This project Belonging to First Heart Unchanged.
 
-### Jekyll Themes
+This project is all Open source and you can fix bugs by fock this Repositories.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/yezi-Administrator/simulation-system-of-FHU/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+If you want to join the management group of First Heart Unchanged,you can cilck(this link)[https://shimo.im/forms/o1tleFp2IQ8jbO4v/fill]to fill the application form.
 
-### Support or Contact
+yours,
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+The management of FHU
