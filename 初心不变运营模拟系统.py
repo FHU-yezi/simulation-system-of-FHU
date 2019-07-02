@@ -73,13 +73,22 @@ try:
         def 部门成员加入(self,编号):
             if 编号 in 人力资源部.群成员列表:
                 self.人员列表.append(编号)
-                print("操作执行成功！") 
+                print("操作执行成功！")
+            else:
+                print("操作执行失败！原因：编号不存在’")
         def 部门成员退出(self,编号):
             if 编号 in 人力资源部.群成员列表 and 编号 in self.人员列表:
                 self.人员列表.remove(编号)
-                print("操作执行成功！") 
+                print("操作执行成功！")
+            else:
+                print("操作执行失败！原因：编号不存在")
+        def __str__(self):
+            return "一个未定义名称的部门：\n\t人数："+str(self.人数)+"\n\t能力："+str(self.能力)+"\n\t人员列表："+str(self.人员列表)
+
     class 群组运营部(部门):
-        pass
+        def __str__(self):
+            return "群组运营部：\n\t人数："+str(self.人数)+"\n\t能力："+str(self.能力)+"\n\t人员列表："+str(self.人员列表)
+
     class 人力资源部(部门):
         def __init__(self):
             self.人数=0
@@ -92,7 +101,7 @@ try:
         def 群成员加入(self):
             for i in range(500):
                 进入=None
-                exec("if 用户"+str(i)+".满意度>=60 and 用户"+str(i)+".活跃度>=3 and randint(0,11)==1:进入=True",globals())
+                exec("if 用户"+str(i)+".满意度>=60 and 用户"+str(i)+".活跃度>=3 and 用户"+str(i)+".在群中==False and randint(0,11)==1:进入=True",globals())
                 if 进入!=None:
                     exec("用户"+str(i)+".在群中=True",globals())
                     exec("self.群成员列表.append(i)",globals())
@@ -101,24 +110,46 @@ try:
         def 群成员退出(self):
             for i in range(500):
                 退出=None
-                exec("if 用户"+str(i)+".满意度>=30 and 用户"+str(i)+".活跃度<=5 and randint(0,11)==1:进入=True",globals())
+                exec("if 用户"+str(i)+".满意度>=30 and 用户"+str(i)+".活跃度<=5 and 用户"+str(i)+".在群中==True and randint(0,11)==1:进入=True",globals())
                 if 退出!=None and i !=0:
                     exec("用户"+str(i)+".在群中=False",globals())
                     exec("self.群成员列表.remove(i)",globals())
                     exec("self.当前群人数-=1",globals())
             print("有 1 个成员退出了初心不变，他的成员编号是",i,"。")
+        def __str__(self):
+            return "人力资源部：\n\t人数："+str(self.人数)+"\n\t能力："+str(self.能力)+"\n\t人员列表："+str(self.人员列表)+"\n\t当前群人数："+str(self.当前群人数)
+
     class 文案宣传部(部门):
         def __init__(self):
             self.人数=0
             self.人员列表=[]
             self.能力=0
+            self.文案列表=[]
             self.当前进行文案="无"
-            self.状态="无正在进行的文案"
             self.总文案数量=0
+            self.当前文案进度=0
         def 新文案(self):
-            pass
+            self.当前进行文案=input("请输入文案名称：")
+            self.文案列表.append(文案名称)
+            self.总文案数量+=1
+            print("名为",文案名称,"的文案已成功创建！")
         def 文案处理(self):
-            pass
+            self.当前文案进度+=self.能力
+            print("名为",self.当前进行文案,"的文案进度增加了",self.能力,"点")
+        def 文案完成度检测(self):
+            if self.当前进行文案=="":
+                print("您当前没有文案，请先创建文案！")
+            elif self.文案完成度>=100:
+                文案质量=randint(0,101)
+                print("您完成了一篇新的文案，其质量为",文案质量,"，全体成员活跃度与满意度上升！")
+                for i in range(500):
+                    exec("用户"+i+".活跃度+=int(文案质量/10)",globals())
+                    exec("用户"+i+".满意度+=文案质量",globals())
+                    self.当前进行文案="无"
+                    self.当前文案进度=0
+            def __str__(self):
+                return "文案宣传部：\n\t人数："+str(self.人数)+"\n\t能力："+str(self.能力)+"\n\t人员列表："+str(self.人员列表)+"\n\t当前进行文案："+self.当前进行文案+"\n\t当前文案进度："+str(self.当前文案进度)
+
     class 舆情分析部(部门):
         def __init__(self):
             self.人数=0
@@ -155,6 +186,7 @@ try:
                 print("产生了一个新的舆情事件，该事件的编号为",当前舆情事件编号,"，该事件是由",舆情事件产生者,"产生的。该事件的等级为：",舆情事件等级,"\n该事件导致成员加入概率降低了",本次buff)
         def 舆情事件处理(self):
             pass
+
     运行日志.debug("初始化部门类成功")
 
     class 用户():
@@ -162,7 +194,7 @@ try:
             self.编号=编号
             self.满意度=randint(30,71)
             self.活跃度=randint(0,11)
-            self.在群中=True
+            self.在群中=False
     运行日志.debug("初始化用户类成功")
 
     class 管理组():
@@ -198,13 +230,14 @@ print("初始化函数......")
 #函数初始化开始
 
 def 用户操作():
-    回答=input("请选择您的操作：\n\t<1>查看运营情况\n:")
+    回答=input("请选择您的操作：\n\t<1>查看运营情况\n\t:")
     if 回答=="1": 
-        print("群组运营部：\n现在是模拟系统中的第",运行天数,"天")
-        print("文案宣传部：\n当前进行文案：",当前进行文案,"\n状态：",状态,"\n总文案数量：",总文案数量)
-        print("舆情分析部：\n当前进行舆情事件编号",当前进行舆情事件编号,"\n舆情事件等级：",舆情事件等级,"\n总舆情事件数量：",总舆情事件数量)
-        print("人力资源部：\n当前人数：",当前人数,"\n当前 buff 加成：",buff,"\n当前综合退群率：",4*buff*-1,"%")
+        print(群组运营部)
+        print(文案宣传部)
+        print(舆情分析部)
+        print(人力资源部)
         input("按下 Enter 键继续")
+        pass
     else:
         print("您跳过了查询")
     
