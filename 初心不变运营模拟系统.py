@@ -1,52 +1,59 @@
 print("初心不变运营模拟系统\n初心不变 超级管理员 叶子\n保留所有权利")
 print("加载模块......")
+print("\t初始化日志记录模块......")
 
 try:
-    print("\t初始化日志记录模块......")
     import logging
+    运行日志=logging.getLogger("运行日志")
+    格式器=logging.Formatter('%(asctime)s %(levelname)-8s %(message)s')
+    输出器=logging.FileHandler("运行日志.log")
+    输出器.setFormatter(格式器)
+    运行日志.addHandler(输出器)
+    输出器.setFormatter(格式器)
+    运行日志.setLevel(logging.DEBUG)
+    运行日志.info("日志记录初始化成功")
+    事件日志=logging.getLogger("事件日志")
+    格式器=logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+    输出器=logging.FileHandler("事件日志.log")
+    输出器.setFormatter(格式器)
+    事件日志.addHandler(输出器)
+    输出器.setFormatter(格式器)
+    事件日志.setLevel(logging.DEBUG)
 except:
     print("关键错误：缺少日志记录模块 logging，该模块用于支持日志记录功能，请先安装此模块")
 finally:
     print("\t日志记录模块加载成功......")
-
-global 运行日志,事件日志
-运行日志=logging.getLogger("运行日志")
-格式器=logging.Formatter('%(asctime)s %(levelname)-8s %(message)s')
-输出器=logging.FileHandler("运行日志.log")
-输出器.setFormatter(格式器)
-运行日志.addHandler(输出器)
-输出器.setFormatter(格式器)
-运行日志.setLevel(logging.DEBUG)
-运行日志.info("日志记录初始化成功")
-
-事件日志=logging.getLogger("事件日志")
-格式器=logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-输出器=logging.FileHandler("事件日志.log")
-输出器.setFormatter(格式器)
-事件日志.addHandler(输出器)
-输出器.setFormatter(格式器)
-事件日志.setLevel(logging.DEBUG)
+    
+def 错误处理(错误原因):
+        print("程序遇到了一个严重错误：",错误原因,"，导致其被迫中止")
+        print("请跟随以下指导尝试排除故障：")
+        print("\t<1>如果您修改过源代码，请尝试访问项目主页下载最新版本")
+        print("\t<2>如果报错信息指向日志文件，请确认您的磁盘空间充足，且您有创建文件的权限")
+        print("\t<3>如果报错信息指向模块，请运行 pip 重新安装报错模块")
+        print("\t<4>如果您下载的版本是非稳定版，请尝试下载最新稳定版")
+        print("\t<5>如果您无法解决该问题，请访问 Gihub 项目主页：https://github.com/FHU-yezi/simulation-system-of-FHU/")
+        print("\t在其中新建一个 Issues 报告问题，并上传本目录中的 运行日志.log 文件，以方便让我们排查问题")
 
 try:
     pass
 except:
-    print("缺少必要组件，请检查文件是否齐全")
     运行日志.critical("缺少必要组件")
+    错误处理("缺少必要组件")
 else:
     print("\t必要组件加载成功......")
     运行日志.debug("必要组件加载成功")
 try:
     from random import random,randint,choice
 except:
-    print("关键错误：缺少 random 模块，该模块用于支持随机数功能，请先安装此模块。")
     运行日志.critical("缺少 random 模块")
+    错误处理("缺少 random 模块")
 else:
     运行日志.debug("\trandom 模块加载成功")
 try:
     from time import time,sleep
 except:
-    print("关键错误：缺少 time 模块，该模块用于支持等待功能，请先安装此模块。")
     运行日志.critical("缺少 time 模块")
+    错误处理("缺少 time 模块")
 else:
     运行日志.debug("\ttime 模块加载成功")
 
@@ -204,10 +211,10 @@ try:
             self.人数=0
             self.人员列表=[]
 except:
-    print("初始化类失败")
     运行日志.critical("初始化类失败")
+    错误处理("初始化类失败")
 else:
-    print("初始化所有类成功......")
+    print("初始化类成功......")
     运行日志.info("初始化类成功")
 
 运行日志.info("初始化对象")
@@ -222,8 +229,8 @@ try:
     for i in range(500):
         exec("用户"+str(i)+"=用户("+str(i)+")")
 except:
-    print("初始化对象失败")
     运行日志.critical("初始化对象失败")
+    错误处理("初始化对像失败")
 else:
     运行日志.info("初始化对象成功")
     print("初始化对象成功......")
@@ -239,13 +246,14 @@ def 用户操作():
         print(舆情分析部)
         print(人力资源部)
         input("按下 Enter 键继续")
-        pass
+        运行日志.debug("用户查看了运营情况")
     else:
         print("您跳过了查询")
 
 def 结束(原因):
     print("您结束了长达",运行天数,"个虚拟天的初心之旅，因为",原因,"。")
     print("但是，初心不变的种子仍在，它将重新启动，再次开始在这个神秘莫测的环境中进化，欢迎您再次使用。")
+    运行日志.info("结束")
     input("按下 Enter 键退出......")
     exit()
     
@@ -259,17 +267,23 @@ while True:
     print("今天是第",运行天数,"天")
     if randint(0,11)<=3:
         舆情分析部.新舆情事件()
+        运行日志.debug("触发新舆情事件")
     if randint(0,11)<=5:
         人力资源部.群成员加入()
+        运行日志.debug("触发成员加入事件")
     if randint(0,11)<=5:
         人力资源部.群成员退出()
+        运行日志.debug("触发成员退出事件")
     if 舆情分析部.舆情事件进行中==True:
         舆情分析部.舆情事件处理()
+        运行日志.debug("触发舆情处理事件")
     用户操作()
     if 人力资源部.当前群人数<=10:
         警告次数+=1
         print("警告：人数不足！（如连续出现此警告 10 次将结束）")
+        运行日志.info("触发人数不足事件")
     else:
         警告次数=0
+        运行日志.debug("警告次数归零")
     if 警告次数>=10:
         结束("人数不足")
