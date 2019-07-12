@@ -81,12 +81,14 @@ try:
             if 编号 in 人力资源部.群成员列表:
                 self.人员列表.append(编号)
                 print("操作执行成功！")
+                事件日志.info("编号为"+str(编号)+"的成员加入了",self.__class__)
             else:
                 print("操作执行失败！原因：编号不存在’")
         def 部门成员退出(self,编号):
             if 编号 in 人力资源部.群成员列表 and 编号 in self.人员列表:
                 self.人员列表.remove(编号)
                 print("操作执行成功！")
+                事件日志.info("编号为"+str(编号)+"的成员退出了",self.__class__)
             else:
                 print("操作执行失败！原因：编号不存在")
         def __str__(self):
@@ -100,10 +102,9 @@ try:
         def __init__(self):
             self.人数=0
             self.人员列表=[]
-            self.群成员列表=[]
+            self.群成员列表=range(15)
             self.能力=0
-            self.当前群人数=1#人数上限为 500，与真实情况相同
-            self.成员编号列表=["0"]
+            self.当前群人数=15#人数上限为 500，与真实情况相同
             self.未分配部门人员=[]
         def 群成员加入(self):
             for i in range(500):
@@ -114,15 +115,17 @@ try:
                     exec("self.群成员列表.append(i)",globals())
                     exec("self.当前群人数+=1",globals())
                     print("有 1 个成员进入了初心不变，他的成员编号是",i,"。")
+                    事件日志.info("编号为"+str(i)+"的成员加入了初心不变")
         def 群成员退出(self):
             for i in range(500):
                 退出=None
                 exec("if 用户"+str(i)+".满意度>=30 and 用户"+str(i)+".活跃度<=5 and 用户"+str(i)+".在群中==True and randint(0,11)==1:进入=True",globals())
-                if 退出!=None and i !=0:
+                if 退出!=None and i!=0:
                     exec("用户"+str(i)+".在群中=False",globals())
                     exec("self.群成员列表.remove(i)",globals())
                     exec("self.当前群人数-=1",globals())
-            print("有 1 个成员退出了初心不变，他的成员编号是",i,"。")
+                    print("有 1 个成员退出了初心不变，他的成员编号是",i,"。")
+                    事件日志.info("编号为"+str(i)+"的成员退出了初心不变")
         def __str__(self):
             return "人力资源部：\n\t人数："+str(self.人数)+"\n\t能力："+str(self.能力)+"\n\t人员列表："+str(self.人员列表)+"\n\t当前群人数："+str(self.当前群人数)
 
@@ -136,13 +139,16 @@ try:
             self.总文案数量=0
             self.当前文案进度=0
         def 新文案(self):
-            self.当前进行文案=input("请输入文案名称：")
+            文案名称=input("请输入文案名称：")
+            self.当前进行文案=文案名称
             self.文案列表.append(文案名称)
             self.总文案数量+=1
             print("名为",文案名称,"的文案已成功创建！")
+            事件日志.info("创建了一个叫做"+文案名称+"的文案")
         def 文案处理(self):
-            self.当前文案进度+=self.能力
-            print("名为",self.当前进行文案,"的文案进度增加了",self.能力,"点")
+            self.当前文案进度+=self.能力+3
+            print("名为",self.当前进行文案,"的文案进度增加了",self.能力+3,"点")
+            事件日志.info(str(self.当前进行文案)+"的文案进度增加了"+str(self.能力+3)+"点")
         def 文案完成度检测(self):
             if self.当前进行文案=="":
                 print("您当前没有文案，请先创建文案！")
@@ -152,8 +158,9 @@ try:
                 for i in range(500):
                     exec("用户"+i+".活跃度+=int(文案质量/10)",globals())
                     exec("用户"+i+".满意度+=文案质量",globals())
-                    self.当前进行文案="无"
-                    self.当前文案进度=0
+                self.当前进行文案="无"
+                self.当前文案进度=0
+                事件日志.info("完成了叫做"+self.当前进行文案+"的文案，质量为",文案质量)
         def __str__(self):
             return "文案宣传部：\n\t人数："+str(self.人数)+"\n\t能力："+str(self.能力)+"\n\t人员列表："+str(self.人员列表)+"\n\t当前进行文案："+str(self.当前进行文案)+"\n\t当前文案进度："+str(self.当前文案进度)
 
@@ -163,13 +170,13 @@ try:
             self.人员列表=[]
             self.能力=0
             self.舆情事件进行中=False
-            self.当前进行舆情事件编号=0
+            self.当前舆情事件编号=0
             self.舆情事件等级="无"
             self.舆情事件产生者="无"
             self.总舆情事件数量=0
             self.舆情事件编号列表=[]
         def 新舆情事件(self):
-            if len(人力资源部.群成员列表)!=0:
+            if 人力资源部.当前群人数!=1:
                 self.舆情事件产生者=choice(人力资源部.群成员列表)#随便选一个人中招
                 self.舆情事件进行中=True
                 self.总舆情事件数量+=1#舆情数量+1
@@ -180,19 +187,37 @@ try:
                         break
                     else:
                         self.当前舆情事件编号=randint(0,501)
-                if self.舆情分析部能力==0:
-                    self.舆情事件等级="重要"
-                elif self.舆情分析部能力<=5:
-                    self.舆情事件等级="一般"
-                elif self.舆情分析部能力<=10:
-                    self.舆情事件等级="微弱"
-                elif self.舆情分析部能力>10:
-                    self.舆情事件等级="微不足道"
-                print("产生了一个新的舆情事件，该事件的编号为",当前舆情事件编号,"，该事件是由",舆情事件产生者,"产生的。该事件的等级为：",舆情事件等级,"\n该事件导致成员加入概率降低了",本次buff)
-        def 舆情事件处理(self):#这里还有一些 bug
-            回答=""
+                self.舆情事件指数=randint(10,101)-self.能力
+                print("产生了一个新的舆情事件，该事件的编号为",self.当前舆情事件编号,"，该事件是由",self.舆情事件产生者,"产生的。舆情事件指数为：",self.舆情事件指数)
+                事件日志.info("产生了编号为"+str(self.当前舆情事件编号)+"的舆情事件")
+        def 舆情事件处理(self):
             while True:
-                回答=input("请选择您要进行的操作：\n<1>发布声明\n<2>不予理睬\n<3>停止运营")
+                回答=""
+                回答=input("舆情事件：请选择您要进行的操作：\n<1>发布声明\n<2>不予理睬\n<3>停止运营")
+                if 回答=="1":
+                    self.舆情事件指数-=self.能力+3
+                    print("舆情事件指数降低了",self.能力+3)
+                    事件日志.info("舆情事件指数降低了"+str(self.能力+3))
+                    if self.舆情事件指数<=0:
+                        self.舆情事件结束()
+                    break
+                elif 回答=="2":
+                    print("您选择不予理睬")
+                    事件日志.info("对于舆情事件，选择了不予理睬")
+                    break
+                elif 回答=="3":
+                    if input("该操作不可逆，请输入 y 确认.....")=="y":
+                        结束("您在一次舆情事件中主动停止运营")
+                    break
+                else:
+                    print("无效输入")
+        def 舆情事件结束(self):
+            print("编号为",self.当前舆情事件编号,"的舆情事件结束")
+            self.舆情事件进行中=False
+            self.舆情事件等级="无"
+            self.舆情事件产生者="无"
+            self.当前舆情事件编号=0
+            self.舆情事件进展=0
         def __str__(self):
             return "舆情分析部：\n\t人数："+str(self.人数)+"\n\t能力："+str(self.能力)+"\n\t人员列表："+str(self.人员列表)+"\n\t当前舆情事件状态："+str(self.舆情事件进行中)+"\n\t当前舆情事件产生者："+str(self.舆情事件产生者)
 
@@ -234,7 +259,6 @@ except:
 else:
     运行日志.info("初始化对象成功")
     print("初始化对象成功......")
-
 print("初始化函数......")
 #函数初始化开始
 
@@ -252,8 +276,9 @@ def 用户操作():
 
 def 结束(原因):
     print("您结束了长达",运行天数,"个虚拟天的初心之旅，因为",原因,"。")
-    print("但是，初心不变的种子仍在，它将重新启动，再次开始在这个神秘莫测的环境中进化，欢迎您再次使用。")
+    print("但是，初心不变的种子仍在，它将重新启动，继续在这个神秘莫测的环境中进化，欢迎您再次使用。")
     运行日志.info("结束")
+    事件日志.info("结束运营，因为",原因)
     input("按下 Enter 键退出......")
     exit()
     
@@ -261,10 +286,12 @@ def 结束(原因):
 print("函数初始化成功......")
 print("即将开始模拟......")
 sleep(1)
+事件日志.info("开始")
 #主程序
 while True:
     运行天数+=1
     print("今天是第",运行天数,"天")
+    事件日志.info("第"+str(运行天数)+"天")
     if randint(0,11)<=3:
         舆情分析部.新舆情事件()
         运行日志.debug("触发新舆情事件")
