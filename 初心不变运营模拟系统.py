@@ -10,10 +10,10 @@ try:
     输出器.setFormatter(格式器)
     运行日志.addHandler(输出器)
     输出器.setFormatter(格式器)
-    运行日志.setLevel(logging.DEBUG)
+    运行日志.setLevel(logging.INFO)
     运行日志.info("日志记录初始化成功")
     事件日志=logging.getLogger("事件日志")
-    格式器=logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+    格式器=logging.Formatter('%(asctime)s %(message)s')
     输出器=logging.FileHandler("事件日志.log")
     输出器.setFormatter(格式器)
     事件日志.addHandler(输出器)
@@ -33,10 +33,12 @@ def 错误处理(错误原因):
         print("\t<4>如果您下载的版本是非稳定版，请尝试下载最新稳定版")
         print("\t<5>如果您无法解决该问题，请访问 Gihub 项目主页：https://github.com/FHU-yezi/simulation-system-of-FHU/")
         print("\t在其中新建一个 Issues 报告问题，并上传本目录中的 运行日志.log 文件，以方便让我们排查问题")
+        print("即将为您输出错误代码......")
+        raise
 
 try:
     pass
-except:
+except ModuleNotFoundError:
     运行日志.critical("缺少必要组件")
     错误处理("缺少必要组件")
 else:
@@ -44,14 +46,14 @@ else:
     运行日志.debug("必要组件加载成功")
 try:
     from random import random,randint,choice
-except:
+except ModuleNotFoundError:
     运行日志.critical("缺少 random 模块")
     错误处理("缺少 random 模块")
 else:
     运行日志.debug("\trandom 模块加载成功")
 try:
     from time import time,sleep
-except:
+except ModuleNotFoundError:
     运行日志.critical("缺少 time 模块")
     错误处理("缺少 time 模块")
 else:
@@ -59,7 +61,7 @@ else:
 
 try:
     from pickle import dump,load
-except:
+except ModuleNotFoundError:
     运行日志.error("缺少 pickle 模块")
     print("缺少 pickle 模块，您将无法进行存档")
 else:
@@ -118,21 +120,21 @@ try:
             for i in range(500):
                 进入=None
                 exec("if 用户"+str(i)+".满意度>=60 and 用户"+str(i)+".活跃度>=3 and 用户"+str(i)+".在群中==False and randint(0,11)==1:进入=True",globals())
-                if 进入!=None:
+                if 进入 == True:
                     exec("用户"+str(i)+".在群中=True",globals())
                     exec("self.群成员列表.append(i)",globals())
                     exec("self.当前群人数+=1",globals())
-                    print("有 1 个成员进入了初心不变，他的成员编号是",i,"。")
+                    print("有 1 个成员进入了初心不变，他的成员编号是",i)
                     事件日志.info("编号为"+str(i)+"的成员加入了初心不变")
         def 群成员退出(self):
             for i in range(500):
                 退出=None
                 exec("if 用户"+str(i)+".满意度>=30 and 用户"+str(i)+".活跃度<=5 and 用户"+str(i)+".在群中==True and randint(0,11)==1:进入=True",globals())
-                if 退出!=None and i!=0:
+                if 退出 != None and i != 0:
                     exec("用户"+str(i)+".在群中=False",globals())
                     exec("self.群成员列表.remove(i)",globals())
                     exec("self.当前群人数-=1",globals())
-                    print("有 1 个成员退出了初心不变，他的成员编号是",i,"。")
+                    print("有 1 个成员退出了初心不变，他的成员编号是",i)
                     事件日志.info("编号为"+str(i)+"的成员退出了初心不变")
         def __str__(self):
             return "人力资源部：\n\t人数："+str(self.人数)+"\n\t能力："+str(self.能力)+"\n\t人员列表："+str(self.人员列表)+"\n\t当前群人数："+str(self.当前群人数)
@@ -147,20 +149,29 @@ try:
             self.总文案数量=0
             self.当前文案进度=0
         def 新文案(self):
-            文案名称=input("请输入文案名称：")
-            self.当前进行文案=文案名称
-            self.文案列表.append(文案名称)
-            self.总文案数量+=1
-            print("名为",文案名称,"的文案已成功创建！")
-            事件日志.info("创建了一个叫做"+文案名称+"的文案")
+            if self.当前进行文案 != "无":
+                if input("当前已经有一个文案，如创建新文案，将会覆盖原先的文案，是否确认？(y/n)")=="y":
+                    文案名称=input("请输入文案名称：")
+                    self.当前进行文案=文案名称
+                    self.文案列表.append(文案名称)
+                    self.总文案数量+=1
+                    print("名为",文案名称,"的文案已成功创建！")
+                    事件日志.info("创建了一个叫做"+文案名称+"的文案")
+            else:
+                文案名称=input("请输入文案名称：")
+                self.当前进行文案=文案名称
+                self.文案列表.append(文案名称)
+                self.总文案数量+=1
+                print("名为",文案名称,"的文案已成功创建！")
+                事件日志.info("创建了一个叫做"+文案名称+"的文案")
         def 文案处理(self):
             self.当前文案进度+=self.能力+3
             print("名为",self.当前进行文案,"的文案进度增加了",self.能力+3,"点")
             事件日志.info(str(self.当前进行文案)+"的文案进度增加了"+str(self.能力+3)+"点")
         def 文案完成度检测(self):
-            if self.当前进行文案=="":
+            if self.当前进行文案 == "无":
                 print("您当前没有文案，请先创建文案！")
-            elif self.文案完成度>=100:
+            elif self.文案完成度 >= 100:
                 文案质量=randint(0,101)
                 print("您完成了一篇新的文案，其质量为",文案质量,"，全体成员活跃度与满意度上升！")
                 for i in range(500):
@@ -184,13 +195,13 @@ try:
             self.总舆情事件数量=0
             self.舆情事件编号列表=[]
         def 新舆情事件(self):
-            if 人力资源部.当前群人数!=1:
+            if 人力资源部.当前群人数 != 1 and self.舆情事件进行中 == False:
                 self.舆情事件产生者=choice(人力资源部.群成员列表)#随便选一个人中招
                 self.舆情事件进行中=True
                 self.总舆情事件数量+=1#舆情数量+1
                 self.当前舆情事件编号=randint(0,501)#随机产生编号
                 while True:#判断编号是否存在于列表中
-                    if (self.当前舆情事件编号 in self.舆情事件编号列表)==False:
+                    if (self.当前舆情事件编号 in self.舆情事件编号列表) == False:
                         self.舆情事件编号列表.append(self.当前舆情事件编号)
                         break
                     else:
@@ -202,19 +213,19 @@ try:
             while True:
                 回答=""
                 回答=input("舆情事件：请选择您要进行的操作：\n<1>发布声明\n<2>不予理睬\n<3>停止运营")
-                if 回答=="1":
+                if 回答 == "1":
                     self.舆情事件指数-=self.能力+3
                     print("舆情事件指数降低了",self.能力+3)
                     事件日志.info("舆情事件指数降低了"+str(self.能力+3))
-                    if self.舆情事件指数<=0:
+                    if self.舆情事件指数 <= 0:
                         self.舆情事件结束()
                     break
-                elif 回答=="2":
+                elif 回答 == "2":
                     print("您选择不予理睬")
                     事件日志.info("对于舆情事件，选择了不予理睬")
                     break
-                elif 回答=="3":
-                    if input("该操作不可逆，请输入 y 确认.....")=="y":
+                elif 回答 == "3":
+                    if input("该操作不可逆，请输入 y 确认.....") == "y":
                         结束("您在一次舆情事件中主动停止运营")
                     break
                 else:
@@ -263,7 +274,7 @@ try:
         exec("用户"+str(i)+"=用户("+str(i)+")")
 except:
     运行日志.critical("初始化对象失败")
-    错误处理("初始化对像失败")
+    错误处理("初始化对象失败")
 else:
     运行日志.info("初始化对象成功")
     print("初始化对象成功......")
@@ -271,18 +282,24 @@ print("初始化函数......")
 #函数初始化开始
 
 def 用户操作():
-    回答=input("请选择您的操作：\n\t<1>查看运营情况\n\t<2>保存存档\n\t<3>读取存档\n\t:")
-    if 回答=="1": 
+    回答=input("请选择您的操作：\n\t<1>查看运营情况\n\t<2>创建新文案\n\t<3>保存存档\n\t<4>读取存档\n\t:")
+    if 回答 == "1": 
         print(群组运营部)
         print(文案宣传部)
         print(舆情分析部)
         print(人力资源部)
         input("按下 Enter 键继续")
         运行日志.debug("用户查看了运营情况")
-    elif 回答=="2":
+    elif 回答 == "2":
+        文案宣传部.新文案()
+    elif 回答 == "3":
         保存存档()
-    elif 回答=="3":
+    elif 回答 == "4":
         读取存档()
+    elif 回答 == "Debug_Mode":
+        print("Debug Mode")
+        运行日志.setLevel(logging.DEBUG)
+        运行日志.warning("Debug 模式开启")
     else:
         print("您跳过了查询")
 
@@ -295,8 +312,8 @@ def 结束(原因):
     exit()
 
 def 保存存档():
-    with open("存档文件.sav","wb") as 存档文件:
-        try:
+    try:
+        with open("存档文件.sav","wb") as 存档文件:
             print("开始保存存档......")
             dump(群组运营部,存档文件)
             dump(人力资源部,存档文件)
@@ -305,15 +322,17 @@ def 保存存档():
             dump(随机数,存档文件)
             dump(运行天数,存档文件)
             dump(警告次数,存档文件)
+            for i in range(500):
+                exec("dump(用户"+str(i)+",存档文件)")
             print("存档成功！")
             运行日志.info("存档成功")
-        except:
-            print("存档失败！")
-            运行日志.error("存档失败")
+    except:
+        print("存档失败！")
+        运行日志.error("存档失败")
 
 def 读取存档():
-    with open("存档文件.sav","rb") as 存档文件:
-        try:
+    try:
+        with open("存档文件.sav","rb") as 存档文件:
             global 群组运营部,人力资源部,文案宣传部,舆情分析部,随机数,运行天数,警告次数
             print("开始读取存档......")
             群组运营部=load(存档文件)
@@ -323,11 +342,16 @@ def 读取存档():
             随机数=load(存档文件)
             运行天数=load(存档文件)
             警告次数=load(存档文件)
+            for i in range(500):
+                exec("用户"+str(i)+"=load(存档文件)")
             print("读档成功！")
             运行日志.info("读档成功")
-        except:
-            print("读档失败！")
-            运行日志.error("读档失败")
+    except FileNotFoundError:
+        print("无存档文件！")
+        运行日志.error("无存档文件")
+    except:
+        print("读档失败！")
+        运行日志.error("读档失败")
         
 #函数初始化结束
 print("函数初始化成功......")
@@ -339,25 +363,28 @@ while True:
     运行天数+=1
     print("今天是第",运行天数,"天")
     事件日志.info("第"+str(运行天数)+"天")
-    if randint(0,11)<=3:
+    if randint(0,11) <= 3:
         舆情分析部.新舆情事件()
         运行日志.debug("触发新舆情事件")
-    if randint(0,11)<=5:
+    if randint(0,11) <= 5:
         人力资源部.群成员加入()
         运行日志.debug("触发成员加入事件")
-    if randint(0,11)<=5:
+    if randint(0,11) <= 5:
         人力资源部.群成员退出()
         运行日志.debug("触发成员退出事件")
-    if 舆情分析部.舆情事件进行中==True:
+    if 文案宣传部.当前进行文案!="无":
+        文案宣传部.文案处理()
+        运行日志.debug("触发文案处理事件")
+    if 舆情分析部.舆情事件进行中 == True:
         舆情分析部.舆情事件处理()
         运行日志.debug("触发舆情处理事件")
     用户操作()
-    if 人力资源部.当前群人数<=10:
+    if 人力资源部.当前群人数 <= 10:
         警告次数+=1
         print("警告：人数不足！（如连续出现此警告 10 次将结束）")
         运行日志.info("触发人数不足事件")
     else:
         警告次数=0
         运行日志.debug("警告次数归零")
-    if 警告次数>=10:
+    if 警告次数 >= 10:
         结束("人数不足")
