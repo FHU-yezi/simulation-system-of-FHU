@@ -23,24 +23,12 @@ except:
     print("关键错误：缺少日志记录模块 logging，该模块用于支持日志记录功能，请先安装此模块")
 else:
     print("\t日志记录模块加载成功......")
-    
-def 错误处理(错误原因):
-        print("程序遇到了一个严重错误：",错误原因,"，导致其被迫中止")
-        print("请跟随以下指导尝试排除故障：")
-        print("\t<1>如果您修改过源代码，请尝试访问项目主页下载最新版本")
-        print("\t<2>如果报错信息指向日志文件，请确认您的磁盘空间充足，且您有创建文件的权限")
-        print("\t<3>如果报错信息指向模块，请运行 pip 重新安装报错模块")
-        print("\t<4>如果您下载的版本是非稳定版，请尝试下载最新稳定版")
-        print("\t<5>如果您无法解决该问题，请访问 Gihub 项目主页：https://github.com/FHU-yezi/simulation-system-of-FHU/")
-        print("\t在其中新建一个 Issues 报告问题，并上传本目录中的 运行日志.log 文件，以方便让我们排查问题")
-        print("即将为您输出错误代码......")
-        raise
 
 try:
     pass
 except ModuleNotFoundError:
     运行日志.critical("缺少必要组件")
-    错误处理("缺少必要组件")
+    raise
 else:
     print("\t必要组件加载成功......")
     运行日志.debug("必要组件加载成功")
@@ -48,14 +36,14 @@ try:
     from random import random,randint,choice
 except ModuleNotFoundError:
     运行日志.critical("缺少 random 模块")
-    错误处理("缺少 random 模块")
+    raise
 else:
     运行日志.debug("\trandom 模块加载成功")
 try:
     from time import time,sleep
 except ModuleNotFoundError:
     运行日志.critical("缺少 time 模块")
-    错误处理("缺少 time 模块")
+    raise
 else:
     运行日志.debug("\ttime 模块加载成功")
 
@@ -82,6 +70,8 @@ print("初始化基础数值......")
 print("数值初始化成功......")
 
 try:
+    class 初始化失败错误(Exception):pass
+
     class 部门():
         def __init__(self):
             self.人数 = 0
@@ -259,7 +249,7 @@ try:
             self.人员列表 = [ ]
 except:
     运行日志.critical("初始化类失败")
-    错误处理("初始化类失败")
+    raise 初始化失败错误
 else:
     print("初始化类成功......")
     运行日志.info("初始化类成功")
@@ -279,7 +269,7 @@ try:
         exec("用户"+str(i)+".在群中=True")
 except:
     运行日志.critical("初始化用户对象失败")
-    错误处理("初始化用户对象失败")
+    raise 初始化失败错误
 else:
     运行日志.info("初始化对象成功")
     print("初始化对象成功......")
