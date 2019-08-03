@@ -213,9 +213,10 @@ try:
             while True:
                 回答 = input("舆情事件：请选择您要进行的操作：\n<1>发布声明\n<2>不予理睬\n<3>停止运营")
                 if 回答 == "1":
-                    self.舆情事件指数 -= self.能力+3
-                    print("舆情事件指数降低了",self.能力+3)
-                    事件日志.info("舆情事件指数降低了"+str(self.能力+3))
+                    temp=randint(1,6)
+                    self.舆情事件指数 -= self.能力+temp
+                    print("舆情事件指数降低了",self.能力+temp)
+                    事件日志.info("舆情事件指数降低了"+str(self.能力+temp))
                     if self.舆情事件指数 <= 0:
                         self.舆情事件结束()
                     break
