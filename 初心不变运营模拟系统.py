@@ -211,9 +211,11 @@ try:
                 事件日志.info("产生了编号为"+str(self.当前舆情事件编号)+"的舆情事件")
         def 舆情事件处理(self):
             while True:
+                if randint(1,5) == 1:
+                    结束("遇到了一个无法处理的舆情事件")
                 回答 = input("舆情事件：请选择您要进行的操作：\n<1>发布声明\n<2>不予理睬\n<3>停止运营")
                 if 回答 == "1":
-                    temp=randint(1,6)
+                    temp=randint(1,5)
                     self.舆情事件指数 -= self.能力+temp
                     print("舆情事件指数降低了",self.能力+temp)
                     事件日志.info("舆情事件指数降低了"+str(self.能力+temp))
@@ -247,6 +249,7 @@ try:
             self.编号 = 编号
             self.满意度 = randint(30,71)
             self.活跃度 = randint(0,11)
+            self.计算机技术=randint(1,11)
             self.在群中 = False
     运行日志.debug("初始化用户类成功")
 
@@ -280,6 +283,7 @@ except:
 else:
     运行日志.info("初始化对象成功")
     print("初始化对象成功......")
+
 print("初始化函数......")
 #函数初始化开始
 
@@ -354,7 +358,7 @@ def 读取存档():
     except:
         print("读档失败！")
         运行日志.error("读档失败")
-        
+
 #函数初始化结束
 print("函数初始化成功......")
 print("即将开始模拟......")
