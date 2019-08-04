@@ -1,9 +1,23 @@
 print("初心不变运营模拟系统\n初心不变 超级管理员 叶子\n保留所有权利")
+
+class 初始化失败错误(Exception):
+    pass
+
 print("加载模块......")
-print("\t初始化日志记录模块......")
 
 try:
+    pass
+    from random import random,randint,choice
+    from time import time,sleep
+    from pickle import dump,load
     import logging
+except ModuleNotFoundError:
+    raise 初始化失败错误("您的 Python 缺少必要模块，请查看用户手册获取帮助")
+else:
+    print("模块加载成功......")
+    运行日志.info("模块加载成功")
+
+try:
     运行日志 = logging.getLogger("运行日志")
     格式器 = logging.Formatter('%(asctime)s %(levelname)-8s %(message)s')
     输出器 = logging.FileHandler("运行日志.log")
@@ -20,58 +34,29 @@ try:
     输出器.setFormatter(格式器)
     事件日志.setLevel(logging.DEBUG)
 except:
-    print("关键错误：缺少日志记录模块 logging，该模块用于支持日志记录功能，请先安装此模块")
+    运行日志.critical("初始化日志记录失败")
+    raise 初始化失败错误("初始化日志记录失败")
 else:
-    print("\t日志记录模块加载成功......")
-
-try:
-    pass
-except ModuleNotFoundError:
-    运行日志.critical("缺少必要组件")
-    raise
-else:
-    print("\t必要组件加载成功......")
-    运行日志.debug("必要组件加载成功")
-try:
-    from random import random,randint,choice
-except ModuleNotFoundError:
-    运行日志.critical("缺少 random 模块")
-    raise
-else:
-    运行日志.debug("\trandom 模块加载成功")
-try:
-    from time import time,sleep
-except ModuleNotFoundError:
-    运行日志.critical("缺少 time 模块")
-    raise
-else:
-    运行日志.debug("\ttime 模块加载成功")
-
-try:
-    from pickle import dump,load
-except ModuleNotFoundError:
-    运行日志.error("缺少 pickle 模块")
-    print("缺少 pickle 模块，您将无法进行存档")
-else:
-    运行日志.debug("\tpickle 模块加载成功")
-
-print("所有模块加载成功......")
-运行日志.info("所有模块加载成功")
+    print("日志记录初始化成功......")
+    运行日志.info("模块加载成功")
 
 print("初始化类......")
 运行日志.info("初始化类")
 
 print("初始化基础数值......")
 
-随机数 = 0
-运行天数 = 0
-警告次数 = 0
-
-print("数值初始化成功......")
+try:
+    随机数 = 0
+    运行天数 = 0
+    警告次数 = 0
+except:
+    运行日志.critical("初始化数值失败")
+    raise 初始化失败错误("初始化树脂失败，请查看用户手册")
+else:
+    print("数值初始化成功......")
+    运行日志.info("初始化数值成功")
 
 try:
-    class 初始化失败错误(Exception):pass
-
     class 部门():
         def __init__(self):
             self.人数 = 0
@@ -241,6 +226,7 @@ try:
             self.活跃度 = randint(0,11)
             self.计算机技术=randint(1,11)
             self.在群中 = False
+
     运行日志.debug("初始化用户类成功")
 
     class 管理组():
@@ -249,112 +235,118 @@ try:
             self.人员列表 = [ ]
 except:
     运行日志.critical("初始化类失败")
-    raise 初始化失败错误
+    raise 初始化失败错误("初始化类失败，请查看用户手册")
 else:
     print("初始化类成功......")
     运行日志.info("初始化类成功")
 
 运行日志.info("初始化对象")
 
-群组运营部 = 群组运营()
-人力资源部 = 人力资源()
-文案宣传部 = 文案宣传()
-舆情分析部 = 舆情分析()
-运行日志.debug("初始化部门对象成功")
-
 try:
+    群组运营部 = 群组运营()
+    人力资源部 = 人力资源()
+    文案宣传部 = 文案宣传()
+    舆情分析部 = 舆情分析()
+    运行日志.debug("初始化部门对象成功")
+
     for i in range(500):
         exec("用户"+str(i)+"=用户("+str(i)+")")
     for i in range(15):
         exec("用户"+str(i)+".在群中=True")
+    运行日志.debug("初始化用户对象成功")
 except:
-    运行日志.critical("初始化用户对象失败")
-    raise 初始化失败错误
+    运行日志.critical("初始化对象失败")
+    raise 初始化失败错误("初始化对象失败，请查看用户手册")
 else:
     运行日志.info("初始化对象成功")
     print("初始化对象成功......")
 
 print("初始化函数......")
-#函数初始化开始
 
-def 用户操作():
-    回答 = input("请选择您的操作：\n\t<1>查看运营情况\n\t<2>创建新文案\n\t<3>保存存档\n\t<4>读取存档\n\t:")
-    if 回答 == "1": 
-        print(群组运营部)
-        print(文案宣传部)
-        print(舆情分析部)
-        print(人力资源部)
-        input("按下 Enter 键继续")
-        运行日志.debug("用户查看了运营情况")
-    elif 回答 == "2":
-        文案宣传部.新文案()
-    elif 回答 == "3":
-        保存存档()
-    elif 回答 == "4":
-        读取存档()
-    elif 回答 == "Debug_Mode":
-        print("Debug Mode")
-        运行日志.setLevel(logging.DEBUG)
-        运行日志.warning("Debug 模式开启")
-    else:
-        print("您跳过了查询")
+try:
+    def 用户操作():
+        回答 = input("请选择您的操作：\n\t<1>查看运营情况\n\t<2>创建新文案\n\t<3>保存存档\n\t<4>读取存档\n\t:")
+        if 回答 == "1": 
+            print(群组运营部)
+            print(文案宣传部)
+            print(舆情分析部)
+            print(人力资源部)
+            input("按下 Enter 键继续")
+            运行日志.debug("用户查看了运营情况")
+        elif 回答 == "2":
+            文案宣传部.新文案()
+        elif 回答 == "3":
+            保存存档()
+        elif 回答 == "4":
+            读取存档()
+        elif 回答 == "Debug_Mode":
+            print("Debug Mode")
+            运行日志.setLevel(logging.DEBUG)
+            运行日志.warning("Debug 模式开启")
+        else:
+            print("您跳过了查询")
 
-def 结束(原因):
-    print("您结束了长达",运行天数,"个虚拟天的初心之旅，因为",原因,"。")
-    print("但是，初心不变的种子仍在，它将重新启动，继续在这个神秘莫测的环境中进化，欢迎您再次使用。")
-    运行日志.info("结束")
-    事件日志.info("结束运营，因为"+原因)
-    input("按下 Enter 键退出......")
-    exit()
+    def 结束(原因):
+        print("您结束了长达",运行天数,"个虚拟天的初心之旅，因为",原因,"。")
+        print("但是，初心不变的种子仍在，它将重新启动，继续在这个神秘莫测的环境中进化，欢迎您再次使用。")
+        运行日志.info("结束")
+        事件日志.info("结束运营，因为"+原因)
+        input("按下 Enter 键退出......")
+        exit()
 
-def 保存存档():
-    try:
-        with open("存档文件.sav","wb") as 存档文件:
-            print("开始保存存档......")
-            dump(群组运营部,存档文件)
-            dump(人力资源部,存档文件)
-            dump(文案宣传部,存档文件)
-            dump(舆情分析部,存档文件)
-            dump(随机数,存档文件)
-            dump(运行天数,存档文件)
-            dump(警告次数,存档文件)
-            for i in range(500):
-                exec("dump(用户"+str(i)+",存档文件)")
-            print("存档成功！")
-            运行日志.info("存档成功")
-    except:
-        print("存档失败！")
-        运行日志.error("存档失败")
+    def 保存存档():
+        try:
+            with open("存档文件.sav","wb") as 存档文件:
+                print("开始保存存档......")
+                dump(群组运营部,存档文件)
+                dump(人力资源部,存档文件)
+                dump(文案宣传部,存档文件)
+                dump(舆情分析部,存档文件)
+                dump(随机数,存档文件)
+                dump(运行天数,存档文件)
+                dump(警告次数,存档文件)
+                for i in range(500):
+                    exec("dump(用户"+str(i)+",存档文件)")
+                print("存档成功！")
+                运行日志.info("存档成功")
+        except:
+            print("存档失败！")
+            运行日志.error("存档失败")
 
-def 读取存档():
-    try:
-        with open("存档文件.sav","rb") as 存档文件:
-            global 群组运营部,人力资源部,文案宣传部,舆情分析部,随机数,运行天数,警告次数
-            print("开始读取存档......")
-            群组运营部=load(存档文件)
-            人力资源部=load(存档文件)
-            文案宣传部=load(存档文件)
-            舆情分析部=load(存档文件)
-            随机数=load(存档文件)
-            运行天数=load(存档文件)
-            警告次数=load(存档文件)
-            for i in range(500):
-                exec("用户"+str(i)+"=load(存档文件)")
-            print("读档成功！")
-            运行日志.info("读档成功")
-    except FileNotFoundError:
-        print("无存档文件！")
-        运行日志.error("无存档文件")
-    except:
-        print("读档失败！")
-        运行日志.error("读档失败")
+    def 读取存档():
+        try:
+            with open("存档文件.sav","rb") as 存档文件:
+                global 群组运营部,人力资源部,文案宣传部,舆情分析部,随机数,运行天数,警告次数
+                print("开始读取存档......")
+                群组运营部=load(存档文件)
+                人力资源部=load(存档文件)
+                文案宣传部=load(存档文件)
+                舆情分析部=load(存档文件)
+                随机数=load(存档文件)
+                运行天数=load(存档文件)
+                警告次数=load(存档文件)
+                for i in range(500):
+                    exec("用户"+str(i)+"=load(存档文件)")
+                print("读档成功！")
+                运行日志.info("读档成功")
+        except FileNotFoundError:
+            print("无存档文件！")
+            运行日志.error("无存档文件")
+        except:
+            print("读档失败！")
+            运行日志.error("读档失败")
+except:
+    运行日志.critical("初始化函数失败")
+    raise 初始化失败错误("初始化函数失败，请查看用户手册")
+else:
+    运行日志.info("初始化函数成功")
+    print("函数初始化成功......")
 
-#函数初始化结束
-print("函数初始化成功......")
+
 print("即将开始模拟......")
 sleep(1)
 事件日志.info("开始")
-#主程序
+
 while True:
     运行天数 += 1
     print("今天是第",运行天数,"天")
