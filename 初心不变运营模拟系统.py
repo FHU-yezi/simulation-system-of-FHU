@@ -15,7 +15,6 @@ except ModuleNotFoundError:
     raise 初始化失败错误("您的 Python 缺少必要模块，请查看用户手册获取帮助")
 else:
     print("模块加载成功......")
-    运行日志.info("模块加载成功")
 
 try:
     运行日志 = logging.getLogger("运行日志")
