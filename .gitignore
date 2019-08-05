@@ -2,3 +2,6 @@
 *.json
 *.csv
 *.sav
+*.spec
+*.pyc
+*.cpython
