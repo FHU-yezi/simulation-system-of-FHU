@@ -101,24 +101,26 @@ try:
             self.当前群人数 = 15#人数上限为 500，与真实情况相同
         def 群成员加入(self):
             for i in range(500):
-                进入 = None
-                exec("if 用户"+str(i)+".满意度>=60 and 用户"+str(i)+".活跃度>=3 and 用户"+str(i)+".在群中==False and randint(0,11)==1:进入=True",globals())#别随便改这个，很复杂
-                if 进入 == True:
+                temp_dict = {"进入":False}
+                exec("if 用户"+str(i)+".满意度 >= 70 and 用户"+str(i)+".活跃度 >= 7 and 用户"+str(i)+".在群中 == False and randint(0,11) == 1:进入=True",globals(),temp_dict)#别随便改这个，很复杂
+                if temp_dict["进入"] == True:
                     exec("用户"+str(i)+".在群中=True",globals())
                     self.群成员列表.append(i)
                     self.当前群人数+=1
                     print("有 1 个成员进入了初心不变，他的成员编号是",i)
-                    事件日志.info("编号为"+str(i)+"的成员加入了初心不变")
+                    事件日志.debug("编号为"+str(i)+"的成员加入了初心不变")
+            del temp_dict
         def 群成员退出(self):
             for i in range(500):
-                退出 = None
-                exec("if 用户"+str(i)+".满意度>=30 and 用户"+str(i)+".活跃度<=5 and 用户"+str(i)+".在群中==True and randint(0,11)==1:进入=True",globals())#别随便改这个，很复杂
-                if 退出 != None and i != 0:#不能让自己退出
+                temp_dict = {"退出":False}
+                exec("if 用户"+str(i)+".满意度 <= 30 and 用户"+str(i)+".活跃度 <= 3 and 用户"+str(i)+".在群中 == True and randint(0,11) == 1:进入=True",globals(),temp_dict)#别随便改这个，很复杂
+                if temp_dict["退出"] == True and i != 0:#不能让自己退出
                     exec("用户"+str(i)+".在群中=False",globals())
                     self.群成员列表.remove(i)
                     self.当前群人数-=1
                     print("有 1 个成员退出了初心不变，他的成员编号是",i)
-                    事件日志.info("编号为"+str(i)+"的成员退出了初心不变")
+                    事件日志.debug("编号为"+str(i)+"的成员退出了初心不变")
+            del temp_dict
         def __str__(self):
             return "人力资源部：\n\t人数："+str(self.人数)+"\n\t能力："+str(self.能力)+"\n\t部门人员列表："+str(self.部门人员列表)+"\n\t当前群人数："+str(self.当前群人数)
 
@@ -202,7 +204,7 @@ try:
                     if self.舆情事件指数 <= 0:
                         self.舆情事件结束()
                     break
-                elif 回答 == "2":
+                elif 回答 == "2" or 回答 == "":
                     print("您选择不予理睬")
                     事件日志.info("对于舆情事件，选择了不予理睬")
                     break
@@ -210,8 +212,6 @@ try:
                     if input("该操作不可逆，请输入 y 确认.....") == "y":
                         结束("您在一次舆情事件中主动停止运营")
                     break
-                else:
-                    print("无效输入")
         def 舆情事件结束(self):
             print("编号为",self.当前舆情事件编号,"的舆情事件结束")
             self.舆情事件等级 = None
