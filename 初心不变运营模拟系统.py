@@ -57,6 +57,7 @@ try:
     随机数 = 0
     运行天数 = 0
     警告次数 = 0
+    存档文件状态码 = 0
 except:
     运行日志.critical("初始化数值失败")
     raise 初始化失败错误("初始化数值失败，请查看用户手册")
@@ -131,7 +132,7 @@ try:
             self.部门人员列表 = [ ]
             self.能力 = 0
             self.文案列表 = [ ]
-            self.当前进行文案=None
+            self.当前进行文案 = None
             self.总文案数量 = 0
             self.当前文案进度 = None
         def 新文案(self):
@@ -174,7 +175,7 @@ try:
             self.人数 = 0
             self.部门人员列表 = [ ]
             self.能力 = 0
-            self.当前舆情事件编号=None
+            self.当前舆情事件编号 = None
             self.舆情事件等级 = None
             self.舆情事件产生者 = None
             self.舆情事件指数 = None
@@ -229,7 +230,7 @@ try:
             self.编号 = 编号
             self.满意度 = randint(30,71)
             self.活跃度 = randint(0,10)
-            self.计算机技术=randint(0,10)#未使用
+            self.计算机技术 = randint(0,10)#未使用
             self.所属部门 = None
             self.在群中 = False
 
@@ -361,6 +362,7 @@ try:
         try:
             with open("存档文件.sav","wb") as 存档文件:
                 print("开始保存存档......")
+                dump(存档文件状态码)
                 dump(群组运营部,存档文件)
                 dump(人力资源部,存档文件)
                 dump(文案宣传部,存档文件)
@@ -379,19 +381,23 @@ try:
     def 读取存档():
         try:
             with open("存档文件.sav","rb") as 存档文件:
-                global 群组运营部,人力资源部,文案宣传部,舆情分析部,随机数,运行天数,警告次数
+                global 存档文件状态码,群组运营部,人力资源部,文案宣传部,舆情分析部,随机数,运行天数,警告次数
                 print("开始读取存档......")
-                群组运营部=load(存档文件)
-                人力资源部=load(存档文件)
-                文案宣传部=load(存档文件)
-                舆情分析部=load(存档文件)
-                随机数=load(存档文件)
-                运行天数=load(存档文件)
-                警告次数=load(存档文件)
+                存档文件状态码 = load(存档文件)
+                群组运营部 = load(存档文件)
+                人力资源部 = load(存档文件)
+                文案宣传部 = load(存档文件)
+                舆情分析部 = load(存档文件)
+                随机数 = load(存档文件)
+                运行天数 = load(存档文件)
+                警告次数 = load(存档文件)
                 for i in range(500):
                     exec("用户"+str(i)+"=load(存档文件)")
                 print("读档成功！")
                 运行日志.info("读档成功")
+                if 存档文件状态码 != 0:
+                    print("警告：该存档文件未通过校验，其中可能含有恶意代码，请您知悉！")
+                    运行日志.warning("存档文件校验失败")
         except FileNotFoundError:
             print("无存档文件！")
             运行日志.error("无存档文件")
