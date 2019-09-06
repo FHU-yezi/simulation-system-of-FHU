@@ -322,9 +322,6 @@ try:
                 运行日志.warning("Debug 模式开启")
                 主程序()
                 break
-            elif 回答 == "Unit_Test":
-                单元测试()
-                break
             else:
                 print("输入无效！")
 
@@ -404,59 +401,6 @@ try:
         except:
             print("读档失败！")
             运行日志.error("读档失败")
-
-    def 单元测试():
-        for i in range(500):
-            exec("global 用户"+str(i))
-        测试类型 = input("请选择您要进行的测试类型：\n\t<1>完整测试\n\t<2>快速测试")
-        if 测试类型 == "1":
-            print("开始运行完整单元测试......")
-            for _ in range(100):
-                temp_dict = {}
-                temp_int = randint(0,499)
-                exec("if 0 <= 用户"+str(temp_int)+".编号 < 500:OK = True",globals(),temp_dict)
-                if temp_dict["OK"] != True:
-                    raise 单元测试错误("测试"+str(_)+"号对象的 编号 属性时出现问题")
-                exec("if 30 <= 用户"+str(temp_int)+".满意度 <= 71:OK = True",globals(),temp_dict)
-                if temp_dict["OK"] != True:
-                    raise 单元测试错误("测试"+str(_)+"号对象的 满意度 属性时出现问题")
-                exec("if 0 <= 用户"+str(temp_int)+".活跃度 <= 10:OK = True",globals(),temp_dict)
-                if temp_dict["OK"] != True:
-                    raise 单元测试错误("测试"+str(_)+"号对象的 活跃度 属性时出现问题")
-                exec("if 0 <= 用户"+str(temp_int)+".计算机技术 <= 10:OK = True",globals(),temp_dict)
-                if temp_dict["OK"] != True:
-                    raise 单元测试错误("测试"+str(_)+"号对象的 计算机技术 属性时出现问题")
-                exec("if  用户"+str(temp_int)+".所属部门 in (None,'群组运营部','人力资源部','文案宣传部','舆情分析部'):OK = True",globals(),temp_dict)
-                if temp_dict["OK"] != True:
-                    raise 单元测试错误("测试"+str(_)+"号对象的 所属部门 属性时出现问题")
-                exec("if 用户"+str(temp_int)+".在群中 == True or 用户"+str(temp_int)+".在群中 == False:OK = True",globals(),temp_dict)
-                if temp_dict["OK"] != True:
-                    raise 单元测试错误("测试"+str(_)+"号对象的 在群中 属性时出现问题")
-            print("完成用户类随机抽样测试，未发现问题")
-        elif 回答 == "2":
-            for _ in range(20):
-                temp_dict = {}
-                temp_int = randint(0,499)
-                exec("if 0 <= 用户"+str(temp_int)+".编号 < 500:OK = True",globals(),temp_dict)
-                if temp_dict["OK"] != True:
-                    raise 单元测试错误("测试"+str(_)+"号对象的 编号 属性时出现问题")
-                exec("if 30 <= 用户"+str(temp_int)+".满意度 <= 71:OK = True",globals(),temp_dict)
-                if temp_dict["OK"] != True:
-                    raise 单元测试错误("测试"+str(_)+"号对象的 满意度 属性时出现问题")
-                exec("if 0 <= 用户"+str(temp_int)+".活跃度 <= 10:OK = True",globals(),temp_dict)
-                if temp_dict["OK"] != True:
-                    raise 单元测试错误("测试"+str(_)+"号对象的 活跃度 属性时出现问题")
-                exec("if 0 <= 用户"+str(temp_int)+".计算机技术 <= 10:OK = True",globals(),temp_dict)
-                if temp_dict["OK"] != True:
-                    raise 单元测试错误("测试"+str(_)+"号对象的 计算机技术 属性时出现问题")
-                exec("if  用户"+str(temp_int)+".所属部门 in (None,'群组运营部','人力资源部','文案宣传部','舆情分析部'):OK = True",globals(),temp_dict)
-                if temp_dict["OK"] != True:
-                    raise 单元测试错误("测试"+str(_)+"号对象的 所属部门 属性时出现问题")
-                exec("if 用户"+str(temp_int)+".在群中 == True or 用户"+str(temp_int)+".在群中 == False:OK = True",globals(),temp_dict)
-                if temp_dict["OK"] != True:
-                    raise 单元测试错误("测试"+str(_)+"号对象的 在群中 属性时出现问题")
-            print("完成用户类随机抽样测试，未发现问题")
-        print("完成所有单元测试，未发现问题")
 
     def 部门成员操作():
         print("目前成员情况如下：")
