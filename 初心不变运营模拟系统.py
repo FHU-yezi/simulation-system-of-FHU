@@ -25,7 +25,7 @@ except ModuleNotFoundError:
 else:
     print("模块加载成功......")
 
-try:
+def 初始化运行日志():
     运行日志 = logging.getLogger("运行日志")
     格式器 = logging.Formatter('%(asctime)s %(levelname)-8s %(message)s')
     输出器 = logging.FileHandler("运行日志.log")#运行日志输出文件
@@ -34,6 +34,10 @@ try:
     输出器.setFormatter(格式器)
     运行日志.setLevel(logging.INFO)#运行日志等级
     运行日志.info("日志记录初始化成功")
+    return 运行日志
+
+
+def 初始化事件日志():
     事件日志 = logging.getLogger("事件日志")
     格式器 =logging.Formatter('%(asctime)s %(message)s')
     输出器 = logging.FileHandler("事件日志.log")#事件日志输出文件
@@ -41,12 +45,18 @@ try:
     事件日志.addHandler(输出器)
     输出器.setFormatter(格式器)
     事件日志.setLevel(logging.DEBUG)#事件日志等级（无意义）
+    return 事件日志
+
+try:
+    运行日志 = 初始化运行日志()
+    事件日志 = 初始化事件日志()
 except:
-    运行日志.critical("初始化日志记录失败")
-    raise 初始化失败错误("初始化日志记录失败，请查看用户手册")
+    运行日志.critical("初始化日志失败")
+    raise 初始化失败错误("初始化日志失败，请查看用户手册")
 else:
     print("日志记录初始化成功......")
-    运行日志.info("模块加载成功")
+    运行日志.info("日志记录初始化成功")
+
 
 print("初始化类......")
 运行日志.info("初始化类")
@@ -356,24 +366,20 @@ try:
         exit()
 
     def 保存存档():
-        try:
-            with open("存档文件.sav","wb") as 存档文件:
-                print("开始保存存档......")
-                dump(存档文件状态码)
-                dump(群组运营部,存档文件)
-                dump(人力资源部,存档文件)
-                dump(文案宣传部,存档文件)
-                dump(舆情分析部,存档文件)
-                dump(随机数,存档文件)
-                dump(运行天数,存档文件)
-                dump(警告次数,存档文件)
-                for i in range(500):
-                    exec("dump(用户"+str(i)+",存档文件)")
-                print("存档成功！")
-                运行日志.info("存档成功")
-        except:
-            print("存档失败！")
-            运行日志.error("存档失败")
+        with open("存档文件.sav","wb") as 存档文件:
+            print("开始保存存档......")
+            dump(存档文件状态码,存档文件)
+            dump(群组运营部,存档文件)
+            dump(人力资源部,存档文件)
+            dump(文案宣传部,存档文件)
+            dump(舆情分析部,存档文件)
+            dump(随机数,存档文件)
+            dump(运行天数,存档文件)
+            dump(警告次数,存档文件)
+            for i in range(500):
+                exec("dump(用户"+str(i)+",存档文件)")
+            print("存档成功！")
+            运行日志.info("存档成功")
 
     def 读取存档():
         try:
@@ -398,9 +404,6 @@ try:
         except FileNotFoundError:
             print("无存档文件！")
             运行日志.error("无存档文件")
-        except:
-            print("读档失败！")
-            运行日志.error("读档失败")
 
     def 部门成员操作():
         print("目前成员情况如下：")
@@ -455,4 +458,5 @@ else:
     运行日志.info("初始化函数成功")
     print("函数初始化成功......")
 
-初始操作()#入口
+if __name__ == "__main__":
+    初始操作()#入口
