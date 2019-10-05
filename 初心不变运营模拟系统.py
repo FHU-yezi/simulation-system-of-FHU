@@ -63,11 +63,16 @@ print("初始化类......")
 
 print("初始化基础数值......")
 
-try:
+
+def 初始化数值():
+    global 随机数,运行天数,警告次数,存档文件状态码
     随机数 = 0
     运行天数 = 0
     警告次数 = 0
     存档文件状态码 = 0
+
+try:
+    初始化数值()
 except:
     运行日志.critical("初始化数值失败")
     raise 初始化失败错误("初始化数值失败，请查看用户手册")
@@ -75,22 +80,24 @@ else:
     print("数值初始化成功......")
     运行日志.info("初始化数值成功")
 
-try:
+def 初始化类():
+    global 运行日志,事件日志,random,randint,choice,部门,群组运营,人力资源,文案宣传,人力资源,舆情分析,用户,管理组
     class 部门():
-        def __init__(self):
+        def __init__(self,name):
+            self.name = name
             self.人数 = 0
             self.部门人员列表 = [ ]
             self.能力 = 0
         def 部门成员加入(self,编号):
             if 编号 in 人力资源部.群成员列表:
                 self.部门人员列表.append(编号)
-                事件日志.info("编号为"+str(编号)+"的成员加入了",self.__class__)
+                事件日志.info("编号为"+str(编号)+"的成员加入了"+str(self.name))
             else:
                 raise 成员不存在错误("编号为"+str(编号)+"的成员不在群中")
         def 部门成员退出(self,编号):
             if 编号 in 人力资源部.群成员列表 and 编号 in self.部门人员列表:
                 self.部门人员列表.remove(编号)
-                事件日志.info("编号为"+str(编号)+"的成员退出了",self.__class__)
+                事件日志.info("编号为"+str(编号)+"的成员退出了"+str(self.name))
             else:
                 raise 成员不存在错误("编号为"+str(编号)+"的成员不在群或部门中")
 
@@ -98,14 +105,12 @@ try:
             return "一个未定义名称的部门：\n\t人数："+str(self.人数)+"\n\t能力："+str(self.能力)+"\n\t人员列表："+str(self.部门人员列表)
 
     class 群组运营(部门):
-        """
-        后期会继续添加更多方法
-        """
         def __str__(self):
             return "群组运营部：\n\t人数："+str(self.人数)+"\n\t能力："+str(self.能力)+"\n\t部门人员列表："+str(self.部门人员列表)
 
     class 人力资源(部门):
-        def __init__(self):
+        def __init__(self,name):
+            self.name = name
             self.人数 = 0
             self.部门人员列表 = [ ]
             self.群成员列表 = list(range(15))#range 会返回一个生成器，需要用 list 转换
@@ -137,7 +142,8 @@ try:
             return "人力资源部：\n\t人数："+str(self.人数)+"\n\t能力："+str(self.能力)+"\n\t部门人员列表："+str(self.部门人员列表)+"\n\t当前群人数："+str(self.当前群人数)
 
     class 文案宣传(部门):
-        def __init__(self):
+        def __init__(self,name):
+            self.name = name
             self.人数 = 0
             self.部门人员列表 = [ ]
             self.能力 = 0
@@ -152,6 +158,7 @@ try:
                     self.当前进行文案 = 文案名称
                     self.文案列表.append(文案名称)
                     self.总文案数量 += 1
+                    self.当前文案进度 = 0
                     print("名为",文案名称,"的文案已成功创建！")
                     事件日志.info("创建了一个叫做"+文案名称+"的文案")
             else:
@@ -161,6 +168,7 @@ try:
                 self.总文案数量 += 1
                 print("名为",文案名称,"的文案已成功创建！")
                 事件日志.info("创建了一个叫做"+文案名称+"的文案")
+                self.当前文案进度 = 0
         def 文案处理(self):
             self.当前文案进度 += self.能力+randint(1,10)
             print("名为",self.当前进行文案,"的文案进度增加了",self.能力+3,"点")
@@ -168,7 +176,7 @@ try:
         def 文案完成度检测(self):
             if not self.当前进行文案:
                 print("您当前没有文案，请先创建文案！")
-            elif self.文案完成度 >= 100:
+            elif self.当前文案进度 >= 100:
                 文案质量=randint(0,101)
                 print("您完成了一篇新的文案，其质量为",文案质量,"，全体成员活跃度与满意度上升！")
                 for i in range(500):
@@ -181,7 +189,8 @@ try:
             return "文案宣传部：\n\t人数："+str(self.人数)+"\n\t能力："+str(self.能力)+"\n\t部门人员列表："+str(self.部门人员列表)+"\n\t当前进行文案："+str(self.当前进行文案)+"\n\t当前文案进度："+str(self.当前文案进度)
 
     class 舆情分析(部门):
-        def __init__(self):
+        def __init__(self,name):
+            self.name = name
             self.人数 = 0
             self.部门人员列表 = [ ]
             self.能力 = 0
@@ -250,6 +259,9 @@ try:
         def __init__(self):
             self.人数 = 0
             self.人员列表 = [ ]
+
+try:
+    初始化类()
 except:
     运行日志.critical("初始化类失败")
     raise 初始化失败错误("初始化类失败，请查看用户手册")
@@ -260,10 +272,10 @@ else:
 运行日志.info("初始化对象")
 
 try:
-    群组运营部 = 群组运营()
-    人力资源部 = 人力资源()
-    文案宣传部 = 文案宣传()
-    舆情分析部 = 舆情分析()
+    群组运营部 = 群组运营("群组运营")
+    人力资源部 = 人力资源("人力资源")
+    文案宣传部 = 文案宣传("文案宣传")
+    舆情分析部 = 舆情分析("舆情分析")
     运行日志.debug("初始化部门对象成功")
 
     for i in range(500):
@@ -275,8 +287,8 @@ except:
     运行日志.critical("初始化对象失败")
     raise 初始化失败错误("初始化对象失败，请查看用户手册")
 else:
-    运行日志.info("初始化对象成功")
     print("初始化对象成功......")
+    运行日志.info("初始化对象成功")
 
 print("初始化函数......")
 

@@ -6,3 +6,6 @@
 *.pyc
 *.cpython
 *.pof
+.pytest_cache/
+.vscode/
+__pycache__/
