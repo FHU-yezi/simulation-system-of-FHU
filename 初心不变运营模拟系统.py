@@ -2,7 +2,6 @@ print("初心不变运营模拟系统\n初心不变 超级管理员 叶子\n保�
 
 class 初始化失败错误(Exception):
     pass
-
 class 单元测试错误(Exception):
     pass
 class 成员不存在错误(Exception):
@@ -15,7 +14,6 @@ class 成员不存在错误(Exception):
 print("加载模块......")
 
 try:
-    pass
     from random import random,randint,choice
     from time import time,sleep
     from pickle import dump,load#非必要
